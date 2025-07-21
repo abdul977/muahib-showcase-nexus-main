@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Preview Test Environment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for better preview experience */
+        .preview-modal {
+            backdrop-filter: blur(4px);
+        }
+        
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Ensure iframe fills container properly */
+        iframe {
+            border: none;
+            outline: none;
+        }
+        
+        /* Custom scrollbar for modal */
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <div id="test-app-root"></div>
+    
+    <!-- React and ReactDOM from CDN for quick testing -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX transformation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Test App Script -->
+    <script type="text/babel">
+        // This is a placeholder for the test app
+        // In a real implementation, we would compile the TypeScript/JSX files
+        // and include them here, or use a build system like Vite
+        
+        const { useState } = React;
+        
+        function TestMessage() {
+            return (
+                <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                    <div className="text-center p-8 bg-white rounded-lg shadow-lg max-w-md">
+                        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+                            Test Environment Ready
+                        </h1>
+                        <p className="text-gray-600 mb-6">
+                            The test environment structure has been created. 
+                            To run the actual tests, you'll need to:
+                        </p>
+                        <ul className="text-left text-sm text-gray-700 space-y-2 mb-6">
+                            <li>• Set up a proper build system (Vite/Webpack)</li>
+                            <li>• Compile TypeScript components</li>
+                            <li>• Install required dependencies</li>
+                            <li>• Configure the screenshot API</li>
+                        </ul>
+                        <div className="bg-blue-50 p-4 rounded-lg">
+                            <p className="text-sm text-blue-800">
+                                <strong>Next:</strong> Run the iframe compatibility tests 
+                                and screenshot API integration tests.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        
+        ReactDOM.render(<TestMessage />, document.getElementById('test-app-root'));
+    </script>
+</body>
+</html>

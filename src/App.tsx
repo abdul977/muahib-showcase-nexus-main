@@ -5,10 +5,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SiteProvider } from "@/context/SiteContext";
+import { SearchProvider } from "@/context/SearchContext";
 import Index from "./pages/Index";
+import Search from "./pages/Search";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import ChatBot from "@/components/ChatBot";
 
 const queryClient = new QueryClient();
 
@@ -18,14 +21,18 @@ const App = () => (
       <Toaster />
       <Sonner />
       <SiteProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <SearchProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <ChatBot />
+          </BrowserRouter>
+        </SearchProvider>
       </SiteProvider>
     </TooltipProvider>
   </QueryClientProvider>

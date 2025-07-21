@@ -5,11 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useSites } from '@/context/SiteContext';
+import { usePagination } from '@/hooks/usePagination';
 import { Site } from '@/lib/sites';
 import { Edit, ExternalLink, Trash, Plus, Loader2 } from 'lucide-react';
 import AddSiteModal from '@/components/AddSiteModal';
 import EditSiteModal from '@/components/EditSiteModal';
 import DeleteDialog from '@/components/DeleteDialog';
+import Pagination from '@/components/Pagination';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -20,6 +22,23 @@ const Admin = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedSite, setSelectedSite] = useState<Site | null>(null);
+
+  // Pagination setup - 7 sites per page for admin too
+  const {
+    currentData: paginatedSites,
+    currentPage,
+    totalPages,
+    goToPage,
+    canGoNext,
+    canGoPrevious,
+    startIndex,
+    endIndex,
+    totalItems
+  } = usePagination({
+    data: sites,
+    itemsPerPage: 7,
+    initialPage: 1
+  });
 
   useEffect(() => {
     // Check if user is logged in (for demo, we're using localStorage)
@@ -80,44 +99,62 @@ const Admin = () => {
                   <p className="text-gray-500">No sites found. Add your first site!</p>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {sites.map((site) => (
-                    <div key={site.id} className="grid grid-cols-12 gap-6 items-center py-3">
-                      <div className="col-span-5">
-                        <div className="font-medium">{site.name}</div>
-                        <div className="text-gray-500 text-sm line-clamp-1">{site.description}</div>
+                <>
+                  <div className="space-y-4">
+                    {paginatedSites.map((site) => (
+                      <div key={site.id} className="grid grid-cols-12 gap-6 items-center py-3">
+                        <div className="col-span-5">
+                          <div className="font-medium">{site.name}</div>
+                          <div className="text-gray-500 text-sm line-clamp-1">{site.description}</div>
+                        </div>
+                        <div className="col-span-4">
+                          <a
+                            href={site.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+                          >
+                            {site.url.replace(/(^\w+:|^)\/\//, '').split('/')[0]}
+                            <ExternalLink className="h-3 w-3" />
+                          </a>
+                        </div>
+                        <div className="col-span-3 flex space-x-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEdit(site)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDelete(site)}
+                            className="text-destructive hover:text-destructive"
+                          >
+                            <Trash className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
-                      <div className="col-span-4">
-                        <a 
-                          href={site.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-sm text-blue-600 hover:underline flex items-center gap-1"
-                        >
-                          {site.url.replace(/(^\w+:|^)\/\//, '').split('/')[0]}
-                          <ExternalLink className="h-3 w-3" />
-                        </a>
-                      </div>
-                      <div className="col-span-3 flex space-x-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => handleEdit(site)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => handleDelete(site)} 
-                          className="text-destructive hover:text-destructive"
-                        >
-                          <Trash className="h-4 w-4" />
-                        </Button>
-                      </div>
+                    ))}
+                  </div>
+
+                  {/* Pagination Component for Admin */}
+                  {totalPages > 1 && (
+                    <div className="mt-6 pt-6 border-t">
+                      <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={goToPage}
+                        canGoPrevious={canGoPrevious}
+                        canGoNext={canGoNext}
+                        startIndex={startIndex}
+                        endIndex={endIndex}
+                        totalItems={totalItems}
+                      />
                     </div>
-                  ))}
-                </div>
+                  )}
+                </>
               )}
             </CardContent>
           </Card>

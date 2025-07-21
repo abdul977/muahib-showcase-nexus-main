@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import SearchBar from '@/components/SearchBar';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -27,16 +28,21 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto">
-        <div className="flex items-center justify-between">
-          <Link 
-            to="/" 
-            className="flex items-center gap-2"
+        <div className="flex items-center justify-between gap-4">
+          <Link
+            to="/"
+            className="flex items-center gap-2 flex-shrink-0"
           >
             <span className="font-semibold text-xl tracking-tight">
               Muahib Solutions
             </span>
           </Link>
-          
+
+          {/* Search Bar - Hidden on mobile, shown on tablet+ */}
+          <div className="hidden lg:flex flex-1 max-w-md mx-4">
+            <SearchBar compact placeholder="Search projects..." />
+          </div>
+
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               to="/" 

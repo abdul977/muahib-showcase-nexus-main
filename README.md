@@ -32,7 +32,11 @@ cd <YOUR_PROJECT_NAME>
 # Step 3: Install the necessary dependencies.
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Set up environment variables (optional for AI chatbot)
+cp .env.example .env
+# Edit .env file and add your Groq API key if you want AI chatbot functionality
+
+# Step 5: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
